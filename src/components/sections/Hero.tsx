@@ -1,51 +1,124 @@
-// src/components/sections/Hero.tsx
 'use client'
 
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Image from 'next/image'
-import { Brain, Users } from 'lucide-react'
+import { Brain, Users, HeartPulse, Shield, Leaf, Activity } from 'lucide-react'
+
+// 核心信息配置
+const HERO_CONFIG = {
+  tagline: "智慧健康管理专家",
+  headline: {
+    gradient: "数字化健康管理",
+    normal: "您的私人健康顾问"
+  },
+  description: "融合人工智能与专业医疗团队，为您提供个性化的健康管理解决方案，守护全家人的健康生活。",
+  stats: [
+    { label: "服务用户", value: "50,000+" },
+    { label: "专家团队", value: "100+" },
+    { label: "满意度", value: "98%" },
+    { label: "专利技术", value: "80+" }
+  ],
+  features: [
+    {
+      icon: Brain,
+      title: "AI健康评估",
+      subtitle: "智能风险预警",
+      color: "primary"
+    },
+    {
+      icon: HeartPulse,
+      title: "全程健康管理",
+      subtitle: "专业团队跟进",
+      color: "secondary"
+    },
+    {
+      icon: Activity,
+      title: "精准干预方案",
+      subtitle: "个性化定制",
+      color: "accent"
+    }
+  ]
+}
+
+// 动画配置
+const animations = {
+  fadeIn: {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, ease: "easeOut" }
+  },
+  float: {
+    animate: {
+      y: [0, -15, 0],
+      rotate: [0, -1, 0]
+    },
+    transition: {
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }
+}
 
 const Hero: React.FC = () => {
   return (
-    <div className="relative min-h-screen flex items-center overflow-hidden">
-      {/* 背景图案 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10">
-        <div className="absolute inset-0 opacity-10" />
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+      {/* 背景层 */}
+      <div className="absolute inset-0">
+        {/* 替换为适合的抽象医疗背景图片 */}
+        {/* 推荐使用带有柔和科技感的医疗相关抽象背景 */}
+        {/* 图片要求：浅色调、具有科技感、包含医疗元素的矢量或实景图 */}
+        <Image
+          src="/images/hero-bg.jpg"
+          alt="Background"
+          fill
+          className="object-cover opacity-10"
+        />
+        <div className="absolute inset-0 gradient-bg-primary opacity-70" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.8)_0%,transparent_100%)]" />
       </div>
 
-      <div className="container mx-auto px-4 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative z-10"
-          >
-            <span className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-              专业健康管理服务商
-            </span>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              <span className="gradient-text inline-block font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">科技赋能健康</span>
+      <div className="container relative z-10 py-20">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* 左侧内容区 */}
+          <motion.div {...animations.fadeIn} className="space-y-8">
+            {/* 标签 */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full 
+                         bg-white/90 dark:bg-white/10 backdrop-blur-md shadow-sm
+                         border border-primary/10"
+            >
+              <Leaf className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">{HERO_CONFIG.tagline}</span>
+            </motion.div>
+
+            {/* 标题 */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              <span className="gradient-primary">{HERO_CONFIG.headline.gradient}</span>
               <br />
-              为您定制专属方案
+              <span className="text-foreground">{HERO_CONFIG.headline.normal}</span>
             </h1>
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-2xl">
-              福能源致力于为每个人提供专业的健康管理服务，
-              通过科技创新和专业团队，帮助您实现健康生活。
+
+            {/* 描述 */}
+            <p className="text-lg text-muted-foreground leading-relaxed max-w-xl">
+              {HERO_CONFIG.description}
             </p>
-            
-            <div className="flex flex-wrap gap-4 mb-12">
+
+            {/* 按钮组 */}
+            <div className="flex flex-wrap gap-4">
               <Button 
                 size="lg" 
-                className="cta-button"
-                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+                className="cta-button group text-lg"
               >
                 免费咨询
                 <motion.span
                   animate={{ x: [0, 5, 0] }}
-                  transition={{ repeat: Infinity, duration: 1 }}
-                  className="ml-2"
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                  className="ml-2 group-hover:translate-x-1"
                 >
                   →
                 </motion.span>
@@ -53,136 +126,103 @@ const Hero: React.FC = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-primary text-primary hover:bg-primary hover:text-white"
+                className="text-lg rounded-full border-2 border-primary/20 
+                           hover:bg-primary/10 hover:border-primary/30"
               >
                 了解更多
               </Button>
             </div>
-            
-            {/* 信任标识 */}
-            <div className="flex items-center space-x-8">
-              <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="w-10 h-10 rounded-full border-2 border-white overflow-hidden"
-                  >
-                    <Image
-                      src={`/images/testimonials/client-${i}.jpg`}
-                      alt={`Client ${i}`}
-                      width={40}
-                      height={40}
-                      className="w-full h-full object-cover"
-                    />
+
+            {/* 数据统计 */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8">
+              {HERO_CONFIG.stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + index * 0.1 }}
+                  className="text-center"
+                >
+                  <div className="text-2xl font-bold gradient-primary mb-1">
+                    {stat.value}
                   </div>
-                ))}
-              </div>
-              <div>
-                <div className="text-xl font-bold">10,000+</div>
-                <div className="text-muted-foreground">满意客户</div>
-              </div>
-              <div className="h-8 w-px bg-border" />
-              <div className="flex items-center space-x-1">
-                <div className="text-xl font-bold">4.9</div>
-                <div className="flex">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                      />
-                    </svg>
-                  ))}
-                </div>
-                <div className="text-muted-foreground">用户评分</div>
-              </div>
+                  <div className="text-sm text-muted-foreground">
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
 
+          {/* 右侧图片区 */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
             className="relative hidden lg:block"
           >
             <div className="relative w-full aspect-square">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-full animate-pulse" />
+              {/* 主图光晕效果 */}
+              <div className="absolute inset-0 bg-gradient-to-tr 
+                            from-primary/20 via-secondary/20 to-accent/20 
+                            rounded-full blur-3xl animate-pulse-soft" />
+              
+              {/* 主图 - 建议使用立体感强的3D医疗科技场景图 */}
+              {/* 图片要求：透明背景、主色调协调、富有科技感的3D医疗场景 */}
               <Image
-                src="/images/hero/main-hero.png"
-                alt="Health Visualization"
+                src="/images/hero-main.png"
+                alt="Digital Health Technology"
                 fill
                 className="object-contain relative z-10"
+                priority
               />
-              
-              {/* 浮动元素 */}
-              <motion.div
-                animate={{
-                  y: [0, -20, 0],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute top-10 right-10 bg-white p-4 rounded-lg shadow-lg"
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Brain className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-medium">AI健康分析</div>
-                    <div className="text-sm text-muted-foreground">智能评估</div>
-                  </div>
-                </div>
-              </motion.div>
 
-              <motion.div
-                animate={{
-                  y: [0, 20, 0],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1,
-                }}
-                className="absolute bottom-10 left-10 bg-white p-4 rounded-lg shadow-lg"
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-secondary/10 rounded-full flex items-center justify-center">
-                    <Users className="w-6 h-6 text-secondary" />
+              {/* 特征卡片 */}
+              {HERO_CONFIG.features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  {...animations.float}
+                  style={{ 
+                    top: `${25 * index}%`,
+                    right: index % 2 ? 'auto' : '10%',
+                    left: index % 2 ? '10%' : 'auto'
+                  }}
+                  className="absolute glass-effect p-4 rounded-xl shadow-elevation"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-12 h-12 rounded-lg bg-${feature.color}/10 
+                                   flex items-center justify-center`}>
+                      <feature.icon className={`w-6 h-6 text-${feature.color}`} />
+                    </div>
+                    <div>
+                      <div className="font-medium">{feature.title}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {feature.subtitle}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-medium">专家指导</div>
-                    <div className="text-sm text-muted-foreground">一对一服务</div>
-                  </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* 波浪底部装饰 */}
+      {/* 底部装饰 */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg
           className="w-full text-background"
           viewBox="0 0 1440 120"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
         >
           <path
-            d="M0 0L48 8.875C96 17.75 192 35.5 288 44.375C384 53.25 480 53.25 576 44.375C672 35.5 768 17.75 864 17.75C960 17.75 1056 35.5 1152 44.375C1248 53.25 1344 53.25 1392 53.25H1440V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0V0Z"
+            d="M0 120L1440 120L1440 0C1440 0 1082.5 60 720 60C357.5 60 0 0 0 0L0 120Z"
             fill="currentColor"
           />
         </svg>
       </div>
-    </div>
+    </section>
   )
 }
 

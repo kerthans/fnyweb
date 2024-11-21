@@ -1,18 +1,96 @@
-// src/components/ui/AIAssistant.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Bot, Send, X } from 'lucide-react'
+import { Bot, Send, X, Heart, Brain, Activity, Dumbbell, Apple, PhoneCall, Calendar } from 'lucide-react'
 import Image from 'next/image'
+
+
+// 统一配置项
+const CONFIG = {
+  BRAND: {
+    NAME: "福能源健康顾问",
+    TITLE: "专业健康管理专家",
+    LOGO: "/fny_logo.png", // 待替换为实际logo
+  },
+  
+  TRIGGERS: {
+    INITIAL_DELAY: 5000, // 首次加载后延迟显示时间
+    SCROLL_THRESHOLD: 300, // 滚动触发阈值(像素)
+    IDLE_TIME: 30000, // 停留多久后触发(毫秒)
+    REMINDER_INTERVAL: 15000, // 提醒动画间隔
+    EXIT_INTENT_ENABLED: true, // 是否启用退出意图检测
+  },
+
+  POSITION: {
+    DEFAULT_BOTTOM: 60,
+    DEFAULT_RIGHT: 60,
+    SNAP_THRESHOLD: 1000000, // 自动靠边的阈值(像素)
+  },
+
+  QUICK_REPLIES: [
+    {
+      icon: <Heart className="w-4 h-4" />,
+      text: "健康评估",
+    },
+    {
+      icon: <Brain className="w-4 h-4" />,
+      text: "心理咨询",
+    },
+    {
+      icon: <Activity className="w-4 h-4" />,
+      text: "体检服务",
+    },
+    {
+      icon: <Dumbbell className="w-4 h-4" />,
+      text: "运动指导",
+    },
+    {
+      icon: <Apple className="w-4 h-4" />,
+      text: "营养方案",
+    },
+  ],
+
+  MESSAGES: {
+    WELCOME: `
+      您好！我是您的专属健康顾问。
+      
+      我们提供:
+      🏥 专业健康评估
+      🧠 个性化营养方案
+      💪 科学运动指导
+      ❤️ 全程健康管理
+      
+      请问您最关心哪个方面呢？
+    `.trim(),
+    
+    SCROLL_TRIGGER: "看到您对我们的服务感兴趣，需要了解更多详情吗？",
+    IDLE_TRIGGER: "您似乎在寻找健康服务相关信息，需要我的帮助吗？",
+    EXIT_INTENT: "等等！您可能会对我们的健康服务感兴趣，要了解更多吗？",
+  },
+
+  UI: {
+    CHAT_HEIGHT: 400,
+    CHAT_WIDTH: 380,
+    BUTTON_SIZE: 16, // rem
+  }
+}
 
 interface Message {
   id: number
   type: 'user' | 'bot'
   content: string
+  timestamp: number
+}
+
+interface Position {
+  x: number
+  y: number
+  bottom?: number
+  right?: number
 }
 
 export default function AIAssistant() {
@@ -22,59 +100,228 @@ export default function AIAssistant() {
     {
       id: 1,
       type: 'bot',
-      content: '您好！我是福能源健康顾问，很高兴为您服务。让我来介绍一下我们的特色服务：\n\n1. 专业的健康管理方案\n2. 个性化营养指导\n3. 科学运动规划\n\n请问您对哪个方面最感兴趣？'
+      content: CONFIG.MESSAGES.WELCOME,
+      timestamp: Date.now()
     }
   ])
   const [input, setInput] = useState('')
-  const [isButtonAnimating, setIsButtonAnimating] = useState(false)
+  const [isTyping, setIsTyping] = useState(false)
+  const [position, setPosition] = useState<Position>({
+    x: 0,
+    y: 0,
+    bottom: CONFIG.POSITION.DEFAULT_BOTTOM,
+    right: CONFIG.POSITION.DEFAULT_RIGHT
+  })
+  
+  const chatRef = useRef<HTMLDivElement>(null)
+  const dragRef = useRef<HTMLDivElement>(null)
+  const lastScrollPosition = useRef(0)
+  const idleTimer = useRef<NodeJS.Timeout>()
+  const isDragging = useRef(false)
+
+  const scrollToBottom = () => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight
+    }
+  }
 
   useEffect(() => {
-    // 5秒后自动打开助手
-    const timer = setTimeout(() => {
+    scrollToBottom()
+  }, [messages])
+
+  // 初始化触发器
+  useEffect(() => {
+    // 首次加载延迟显示
+    const initialTimer = setTimeout(() => {
       if (!hasShownInitial) {
         setIsOpen(true)
         setHasShownInitial(true)
       }
-    }, 5000)
+    }, CONFIG.TRIGGERS.INITIAL_DELAY)
 
-    // 定时动画提醒
-    const animationTimer = setInterval(() => {
-      if (!isOpen) {
-        setIsButtonAnimating(true)
-        setTimeout(() => setIsButtonAnimating(false), 1000)
+    // 滚动检测
+    const handleScroll = () => {
+      const currentScroll = window.scrollY
+      if (
+        !isOpen && 
+        currentScroll > CONFIG.TRIGGERS.SCROLL_THRESHOLD &&
+        currentScroll > lastScrollPosition.current
+      ) {
+        setIsOpen(true)
+        addBotMessage(CONFIG.MESSAGES.SCROLL_TRIGGER)
       }
-    }, 10000)
+      lastScrollPosition.current = currentScroll
+    }
+
+    // 停留时间检测
+    const resetIdleTimer = () => {
+      if (idleTimer.current) clearTimeout(idleTimer.current)
+      idleTimer.current = setTimeout(() => {
+        if (!isOpen) {
+          setIsOpen(true)
+          addBotMessage(CONFIG.MESSAGES.IDLE_TRIGGER)
+        }
+      }, CONFIG.TRIGGERS.IDLE_TIME)
+    }
+
+    // 退出意图检测
+    const handleExitIntent = (e: MouseEvent) => {
+      if (
+        CONFIG.TRIGGERS.EXIT_INTENT_ENABLED &&
+        !isOpen &&
+        e.clientY <= 0
+      ) {
+        setIsOpen(true)
+        addBotMessage(CONFIG.MESSAGES.EXIT_INTENT)
+      }
+    }
+
+    // 事件监听
+    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('mousemove', resetIdleTimer)
+    window.addEventListener('keydown', resetIdleTimer)
+    window.addEventListener('mouseleave', handleExitIntent)
+    resetIdleTimer()
 
     return () => {
-      clearTimeout(timer)
-      clearInterval(animationTimer)
+      clearTimeout(initialTimer)
+      if (idleTimer.current) clearTimeout(idleTimer.current)
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('mousemove', resetIdleTimer)
+      window.removeEventListener('keydown', resetIdleTimer)
+      window.removeEventListener('mouseleave', handleExitIntent)
     }
   }, [hasShownInitial, isOpen])
 
-  const handleSend = () => {
-    if (!input.trim()) return
+  // 处理拖动
+  useEffect(() => {
+    if (!dragRef.current) return
 
-    // Add user message
+    let startX = 0
+    let startY = 0
+    let startBottom = 0
+    let startRight = 0
+
+    const handleMouseDown = (e: MouseEvent) => {
+      isDragging.current = true
+      startX = e.clientX
+      startY = e.clientY
+      startBottom = position.bottom || CONFIG.POSITION.DEFAULT_BOTTOM
+      startRight = position.right || CONFIG.POSITION.DEFAULT_RIGHT
+      
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging.current) return
+
+      const deltaX = startX - e.clientX
+      const deltaY = startY - e.clientY
+      
+      const newBottom = startBottom - deltaY
+      const newRight = startRight + deltaX
+
+      setPosition(prev => ({
+        ...prev,
+        bottom: Math.max(0, newBottom),
+        right: Math.max(0, newRight)
+      }))
+    }
+
+    const handleMouseUp = (e: MouseEvent) => {
+      isDragging.current = false
+      
+      // 自动靠边
+      const windowWidth = window.innerWidth
+      const currentRight = position.right || CONFIG.POSITION.DEFAULT_RIGHT
+      
+      const newRight = currentRight < CONFIG.POSITION.SNAP_THRESHOLD 
+        ? 0 
+        : (windowWidth - currentRight < CONFIG.POSITION.SNAP_THRESHOLD 
+          ? windowWidth - 80 
+          : currentRight)
+
+      setPosition(prev => ({
+        ...prev,
+        right: newRight
+      }))
+
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+
+    dragRef.current.addEventListener('mousedown', handleMouseDown)
+
+    return () => {
+      if (dragRef.current) {
+        dragRef.current.removeEventListener('mousedown', handleMouseDown)
+      }
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [position])
+
+  const addBotMessage = (content: string) => {
     setMessages(prev => [...prev, {
       id: prev.length + 1,
-      type: 'user',
-      content: input
+      type: 'bot',
+      content,
+      timestamp: Date.now()
     }])
+  }
 
-    // Simulate bot response
-    setTimeout(() => {
-      setMessages(prev => [...prev, {
-        id: prev.length + 1,
-        type: 'bot',
-        content: '感谢您的咨询！我们的专业健康顾问将立即与您取得联系。同时，建议您留下联系方式，以便我们为您提供更专业的一对一服务。'
-      }])
-    }, 1000)
+  const handleSend = async (content: string = input) => {
+    if (!content.trim()) return
 
+    const userMessage: Message = {
+      id: messages.length + 1,
+      type: 'user',
+      content: content.trim(),
+      timestamp: Date.now()
+    }
+
+    setMessages(prev => [...prev, userMessage])
     setInput('')
+    setIsTyping(true)
+
+    // 模拟回复延迟
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    const botMessage: Message = {
+      id: messages.length + 2,
+      type: 'bot',
+      content: generateResponse(content),
+      timestamp: Date.now()
+    }
+
+    setMessages(prev => [...prev, botMessage])
+    setIsTyping(false)
+  }
+
+  const generateResponse = (input: string): string => {
+    if (input.includes('价格') || input.includes('费用')) {
+      return '我们的服务价格根据具体方案定制会有所不同。您可以留下联系方式，我们的健康顾问会为您详细介绍并制定最适合您的方案。'
+    }
+    return '感谢您的咨询！为了给您提供更专业的建议，建议我们预约一次免费的健康评估。\n\n您可以点击下方按钮，选择您方便的时间。'
+  }
+
+  const formatTime = (timestamp: number) => {
+    return new Date(timestamp).toLocaleTimeString('zh-CN', {
+      hour: '2-digit',
+      minute: '2-digit'
+    })
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div 
+      ref={dragRef}
+      className="fixed z-50"
+      style={{
+        bottom: `${position.bottom}px`,
+        right: `${position.right}px`,
+      }}
+    >
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -83,44 +330,106 @@ export default function AIAssistant() {
             exit={{ scale: 0.95, opacity: 0 }}
             className="absolute bottom-20 right-0"
           >
-            <Card className="w-96 shadow-2xl">
+            <Card className={`w-[${CONFIG.UI.CHAT_WIDTH}px] shadow-elevation overflow-hidden`}>
               <CardContent className="p-0">
-                <div className="bg-gradient-to-r from-primary to-secondary p-4 rounded-t-lg flex items-center space-x-3">
-                  <Image
-                    src="/fny_logo.png"
-                    alt="福能源Logo"
-                    width={40}
-                    height={40}
-                    className="rounded-full"
-                  />
-                  <div>
-                    <h3 className="text-white font-medium">福能源健康顾问</h3>
-                    <p className="text-white/80 text-sm">专业健康管理专家</p>
-                  </div>
-                </div>
-                
-                <div className="h-96 p-4 overflow-y-auto space-y-4 bg-gradient-to-b from-white to-primary/5">
-                  {messages.map(message => (
-                    <div
-                      key={message.id}
-                      className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div
-                        className={`max-w-[80%] p-3 rounded-lg ${
-                          message.type === 'user'
-                            ? 'bg-primary text-white'
-                            : 'bg-gray-100'
-                        }`}
-                      >
-                        {message.content.split('\n').map((line, i) => (
-                          <p key={i}>{line}</p>
-                        ))}
-                      </div>
+                {/* 头部 */}
+                <div className="bg-gradient-to-r from-primary via-secondary to-accent p-4 flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-white/10 backdrop-blur">
+                      <Image
+                        src={CONFIG.BRAND.LOGO}
+                        alt={CONFIG.BRAND.NAME}
+                        width={48}
+                        height={48}
+                        className="object-cover"
+                      />
                     </div>
-                  ))}
+                    <div>
+                      <h3 className="text-white font-medium">{CONFIG.BRAND.NAME}</h3>
+                      <p className="text-white/80 text-sm">{CONFIG.BRAND.TITLE}</p>
+                    </div>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className="text-white hover:bg-white/20"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <X className="w-5 h-5" />
+                  </Button>
                 </div>
 
-                <div className="p-4 border-t bg-white rounded-b-lg">
+                {/* 聊天区域 */}
+                <div 
+                  ref={chatRef}
+                  className={`h-[${CONFIG.UI.CHAT_HEIGHT}px] p-4 overflow-y-auto space-y-4 bg-gradient-to-b from-background to-muted`}
+                >
+                  {messages.map(message => (
+                    <motion.div
+                      key={message.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div className={`group max-w-[85%] space-y-1`}>
+                        <div className={`
+                          p-3 rounded-2xl
+                          ${message.type === 'user' 
+                            ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                            : 'bg-card shadow-sm border'}
+                        `}>
+                          {message.content.split('\n').map((line, i) => (
+                            <p key={i} className="leading-relaxed">{line}</p>
+                          ))}
+                        </div>
+                        <p className={`
+                          text-xs opacity-0 group-hover:opacity-60 transition-opacity
+                          ${message.type === 'user' ? 'text-right' : 'text-left'}
+                        `}>
+                          {formatTime(message.timestamp)}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+                  {isTyping && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex space-x-2"
+                    >
+                      <div className="bg-muted rounded-full p-3">
+                        <motion.div
+                          animate={{
+                            scale: [1, 1.2, 1],
+                            transition: { repeat: Infinity, duration: 1 }
+                          }}
+                        >
+                          <Activity className="w-4 h-4 text-muted-foreground" />
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* 快速回复 */}
+                <div className="p-2 bg-muted/50 border-t border-b overflow-x-auto">
+                  <div className="flex space-x-2">
+                    {CONFIG.QUICK_REPLIES.map((reply, index) => (
+                      <Button
+                        key={index}
+                        variant="outline"
+                        className="flex-shrink-0 hover:bg-primary hover:text-white"
+                        onClick={() => handleSend(reply.text)}
+                      >
+                        {reply.icon}
+                        <span className="ml-2">{reply.text}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 输入区域 */}
+                <div className="p-4 bg-background">
                   <div className="flex space-x-2">
                     <Input
                       value={input}
@@ -129,8 +438,21 @@ export default function AIAssistant() {
                       className="flex-1"
                       onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                     />
-                    <Button onClick={handleSend} className="bg-primary hover:bg-primary/90">
+                    <Button 
+                      onClick={() => handleSend()}
+                      className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white"
+                    >
                       <Send className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="mt-3 flex justify-between items-center">
+                    <Button variant="ghost" size="sm" className="text-muted-foreground">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      预约咨询
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-muted-foreground">
+                      <PhoneCall className="w-4 h-4 mr-2" />
+                      电话咨询
                     </Button>
                   </div>
                 </div>
@@ -140,17 +462,21 @@ export default function AIAssistant() {
         )}
       </AnimatePresence>
 
+      {/* 悬浮按钮 */}
       <motion.div
-        animate={isButtonAnimating ? {
-          scale: [1, 1.1, 1],
-          rotate: [0, 10, -10, 0],
-        } : {}}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="cursor-move"
       >
         <Button
           size="lg"
-          className={`w-16 h-16 rounded-full shadow-lg ${
-            isOpen ? 'bg-destructive' : 'bg-primary'
-          } hover:scale-110 transition-transform`}
+          className={`
+            w-${CONFIG.UI.BUTTON_SIZE} h-${CONFIG.UI.BUTTON_SIZE} rounded-full shadow-elevation
+            ${isOpen 
+              ? 'bg-gradient-to-r from-destructive to-destructive/80' 
+              : 'bg-gradient-to-r from-primary to-secondary'}
+            hover:shadow-lg transition-all duration-300
+          `}
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? (

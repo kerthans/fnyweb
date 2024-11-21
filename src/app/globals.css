@@ -1,75 +1,107 @@
-/* src/app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
-    /* 主色调：温暖的绿色，代表健康、生命力 */
-    --primary: 142 72% 29%;
-    --primary-foreground: 355 100% 100%;
+    /* 主色调：专业可靠的靛青色，传递信任与专业 */
+    --primary: 200 85% 45%;
+    --primary-foreground: 0 0% 100%;
     
-    /* 次要色：柔和的蓝色，代表专业、科技 */
-    --secondary: 199 89% 48%;
-    --secondary-foreground: 355 100% 100%;
+    /* 次要色调：生命力青碧色，象征健康与活力 */
+    --secondary: 165 75% 42%;
+    --secondary-foreground: 0 0% 100%;
     
-    /* 强调色：活力橙色，用于CTA */
-    --accent: 32 95% 55%;
-    --accent-foreground: 355 100% 100%;
+    /* 强调色：希望森林绿，代表自然与生机 */
+    --accent: 150 65% 48%;
+    --accent-foreground: 0 0% 100%;
     
-    /* 背景和文字 */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    /* 背景和文字：更柔和的配色 */
+    --background: 200 25% 98%;
+    --foreground: 200 15% 12%;
     
-    /* 中性色调 */
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* 中性色调：优化对比度 */
+    --muted: 200 15% 96%;
+    --muted-foreground: 200 10% 42%;
     
+    /* 卡片和弹窗：增加层次感 */
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    
+    --card-foreground: 200 15% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 200 15% 12%;
     
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    /* 功能色：优化语义色彩 */
+    --success: 150 65% 48%;
+    --success-foreground: 0 0% 100%;
+    --warning: 35 95% 62%;
+    --warning-foreground: 0 0% 100%;
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 142 72% 29%;
+    /* 边框和投影：精细化处理 */
+    --border: 200 15% 92%;
+    --input: 200 15% 92%;
+    --ring: 200 85% 45%;
     
-    --radius: 0.75rem;
+    --radius: 1.15rem;
   }
-
+ 
   .dark {
-    /* 深色模式对应色调 */
-    --primary: 142 72% 35%;
-    --primary-foreground: 355 100% 100%;
+    --background: 200 20% 8%;
+    --foreground: 200 25% 98%;
     
-    --secondary: 199 89% 52%;
-    --secondary-foreground: 355 100% 100%;
+    --primary: 200 75% 52%;
+    --primary-foreground: 0 0% 100%;
     
-    --accent: 32 95% 60%;
-    --accent-foreground: 355 100% 100%;
+    --secondary: 165 65% 48%;
+    --secondary-foreground: 0 0% 100%;
     
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
+    --accent: 150 60% 52%;
+    --accent-foreground: 0 0% 100%;
     
-    /* 其他深色模式颜色... */
+    --muted: 200 25% 15%;
+    --muted-foreground: 200 15% 85%;
+    
+    --card: 200 20% 11%;
+    --card-foreground: 200 25% 98%;
+    --popover: 200 20% 11%;
+    --popover-foreground: 200 25% 98%;
+    
+    --border: 200 25% 18%;
+    --input: 200 25% 18%;
+    --ring: 200 75% 52%;
   }
 }
 
 @layer components {
   .gradient-primary {
-    @apply bg-gradient-to-r from-[hsl(142,72%,29%)] via-[hsl(142,72%,35%)] to-[hsl(199,89%,48%)] bg-clip-text text-transparent;
+    @apply relative inline-block;
+    background: linear-gradient(
+      135deg, 
+      hsl(var(--primary)) 0%,
+      hsl(var(--secondary)) 50%,
+      hsl(var(--accent)) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
   }
 
-  .gradient-cta {
-    @apply bg-gradient-to-r from-accent via-accent/90 to-primary hover:from-accent/90 hover:to-primary/90 text-white transition-all duration-300;
+  .gradient-bg-primary {
+    @apply relative;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.08) 0%,
+      hsl(var(--secondary) / 0.08) 50%,
+      hsl(var(--accent) / 0.08) 100%
+    );
   }
 
   .hover-card {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+    @apply transition-all duration-500 
+           hover:shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] 
+           hover:-translate-y-1.5;
   }
 
   .container {
@@ -77,48 +109,111 @@
   }
 
   .cta-button {
-    @apply rounded-full bg-accent text-white px-8 py-3 font-medium hover:bg-accent/90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+    @apply relative overflow-hidden
+           bg-gradient-to-r from-primary via-secondary to-accent
+           text-white font-semibold
+           rounded-full px-10 py-3.5
+           transition-all duration-500
+           hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)]
+           hover:scale-[1.02]
+           active:scale-95
+           before:absolute before:inset-0
+           before:bg-white/25 before:opacity-0
+           hover:before:opacity-100
+           before:transition-opacity;
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-bold mb-4;
-    @apply bg-gradient-to-r from-[hsl(142,72%,29%)] via-[hsl(142,72%,35%)] to-[hsl(199,89%,48%)];
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    /* 可选的样式增强 */
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    filter: drop-shadow(0 0 0.5px rgba(0,0,0,0.1));
-  }
-  
-  /* 可选：添加动画效果 */
-  .section-title {
-    background-size: 200% auto;
-    animation: shine 3s linear infinite;
-  }
-  
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold 
+           mb-8 leading-tight tracking-tight
+           gradient-primary;
   }
 }
 
-/* 自定义动画 */
+/* 优化动画效果 */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-15px) rotate(1deg); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(0.985); }
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.gradient-text {
-  background-image: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.5) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-fill-color: transparent;
+.animate-pulse-soft {
+  animation: pulse-soft 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* 优化滚动条 */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--primary) / 0.15),
+    hsl(var(--secondary) / 0.15)
+  );
+  border-radius: 5px;
+  border: 3px solid hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--primary) / 0.25),
+    hsl(var(--secondary) / 0.25)
+  );
+}
+
+/* 优化选中文本 */
+::selection {
+  background: linear-gradient(
+    to right,
+    hsl(var(--primary) / 0.15),
+    hsl(var(--secondary) / 0.15)
+  );
+  color: hsl(var(--primary));
+}
+
+/* 优化焦点轮廓 */
+:focus-visible {
+  outline: 2.5px solid hsl(var(--primary) / 0.5);
+  outline-offset: 3px;
+}
+
+/* 优化字体渲染 */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.2px;
+}
+
+/* 增加全局过渡效果 */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* 优化图片和卡片阴影 */
+.shadow-elevation {
+  box-shadow: 
+    0 5px 30px -15px rgba(0, 0, 0, 0.1),
+    0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+/* 添加磨砂玻璃效果 */
+.glass-effect {
+  @apply backdrop-blur-lg bg-white/70 dark:bg-black/70;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
