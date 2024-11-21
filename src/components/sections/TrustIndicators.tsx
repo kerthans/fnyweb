@@ -1,4 +1,5 @@
 // src/components/sections/TrustIndicators.tsx
+import Image from 'next/image';
 export default function TrustIndicators() {
     const trustElements = [
       {
@@ -29,7 +30,7 @@ export default function TrustIndicators() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {trustElements.map((item, index) => (
               <div key={index} className="text-center">
-                <img
+                <Image
                   src={item.icon}
                   alt={item.title}
                   className="w-16 h-16 mx-auto mb-4"

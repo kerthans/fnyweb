@@ -195,72 +195,75 @@ export default function AIAssistant() {
 
   // 处理拖动
   useEffect(() => {
-    if (!dragRef.current) return
+    // 将 dragRef.current 复制到变量中
+    const currentDragRef = dragRef.current;
+    if (!currentDragRef) return;
 
-    let startX = 0
-    let startY = 0
-    let startBottom = 0
-    let startRight = 0
+    let startX = 0;
+    let startY = 0;
+    let startBottom = 0;
+    let startRight = 0;
 
     const handleMouseDown = (e: MouseEvent) => {
-      isDragging.current = true
-      startX = e.clientX
-      startY = e.clientY
-      startBottom = position.bottom || CONFIG.POSITION.DEFAULT_BOTTOM
-      startRight = position.right || CONFIG.POSITION.DEFAULT_RIGHT
-      
-      document.addEventListener('mousemove', handleMouseMove)
-      document.addEventListener('mouseup', handleMouseUp)
-    }
+      isDragging.current = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startBottom = position.bottom || CONFIG.POSITION.DEFAULT_BOTTOM;
+      startRight = position.right || CONFIG.POSITION.DEFAULT_RIGHT;
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    };
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging.current) return
+      if (!isDragging.current) return;
 
-      const deltaX = startX - e.clientX
-      const deltaY = startY - e.clientY
-      
-      const newBottom = startBottom - deltaY
-      const newRight = startRight + deltaX
+      const deltaX = startX - e.clientX;
+      const deltaY = startY - e.clientY;
 
-      setPosition(prev => ({
+      const newBottom = startBottom - deltaY;
+      const newRight = startRight + deltaX;
+
+      setPosition((prev) => ({
         ...prev,
         bottom: Math.max(0, newBottom),
-        right: Math.max(0, newRight)
-      }))
-    }
+        right: Math.max(0, newRight),
+      }));
+    };
 
     const handleMouseUp = () => {
-      isDragging.current = false
-      
+      isDragging.current = false;
+
       // 自动靠边
-      const windowWidth = window.innerWidth
-      const currentRight = position.right || CONFIG.POSITION.DEFAULT_RIGHT
-      
-      const newRight = currentRight < CONFIG.POSITION.SNAP_THRESHOLD 
-        ? 0 
-        : (windowWidth - currentRight < CONFIG.POSITION.SNAP_THRESHOLD 
-          ? windowWidth - 80 
-          : currentRight)
+      const windowWidth = window.innerWidth;
+      const currentRight = position.right || CONFIG.POSITION.DEFAULT_RIGHT;
 
-      setPosition(prev => ({
+      const newRight =
+        currentRight < CONFIG.POSITION.SNAP_THRESHOLD
+          ? 0
+          : windowWidth - currentRight < CONFIG.POSITION.SNAP_THRESHOLD
+          ? windowWidth - 80
+          : currentRight;
+
+      setPosition((prev) => ({
         ...prev,
-        right: newRight
-      }))
+        right: newRight,
+      }));
 
-      document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', handleMouseUp)
-    }
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
 
-    dragRef.current.addEventListener('mousedown', handleMouseDown)
+    currentDragRef.addEventListener('mousedown', handleMouseDown);
 
     return () => {
-      if (dragRef.current) {
-        dragRef.current.removeEventListener('mousedown', handleMouseDown)
+      if (currentDragRef) {
+        currentDragRef.removeEventListener('mousedown', handleMouseDown);
       }
-      document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', handleMouseUp)
-    }
-  }, [position])
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [position]);
 
   const addBotMessage = (content: string) => {
     setMessages(prev => [...prev, {
