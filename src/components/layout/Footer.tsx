@@ -6,31 +6,21 @@ import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { 
-  HeartPulse, // 健康核心
-  Stethoscope, // 专业医疗
-  Brain, // 智慧科技
-  UsersRound, // 服务人群
+  // Brain, // 智慧科技
+  // UsersRound, // 服务人群
   Sparkles, // 创新
-  Clock, // 时间
   Mail, // 邮件
-  MapPin, // 地址
   Phone, // 电话
   ScrollText, // 资质
-  GraduationCap, // 教育
   Activity, // 活力
   Shield, // 安全
-  Award, // 认证
-  ChefHat, // 营养
-  Workflow, // 流程
+  // ChefHat, // 营养
   HandHeart, // 关爱
   Send, // 发送
   BookOpen, // 知识
   MessageSquareText, // 咨询
   Siren, // 紧急
-  Tree, // 生命
-  FileHeart, // 健康档案
-  Scale, // 平衡
-  Leaf // 自然
+  // FileHeart, // 健康档案
 } from 'lucide-react'
 
 // 企业核心信息配置
@@ -77,36 +67,36 @@ const SERVICE_COMMITMENTS = [
 ]
 
 // 解决方案
-const SOLUTIONS = [
-  {
-    icon: FileHeart,
-    name: '个人健康管理',
-    href: '/solutions/personal',
-    description: '科学评估·个性方案·全程跟进',
-    features: ['健康评估', '运动指导', '饮食建议', '睡眠管理']
-  },
-  {
-    icon: UsersRound,
-    name: '企业健康管理',
-    href: '/solutions/enterprise',
-    description: '员工关爱·健康福利·团队活力',
-    features: ['健康体检', '心理关怀', '团建活动', '健康讲座']
-  },
-  {
-    icon: Brain,
-    name: '智慧医疗服务',
-    href: '/solutions/medical',
-    description: 'AI诊断·远程问诊·快速响应',
-    features: ['AI筛查', '专家问诊', '用药指导', '随访管理']
-  },
-  {
-    icon: ChefHat,
-    name: '营养健康服务',
-    href: '/solutions/nutrition',
-    description: '均衡饮食·营养规划·健康烹饪',
-    features: ['营养评估', '膳食指导', '食谱推荐', '营养课堂']
-  }
-]
+// const SOLUTIONS = [
+//   {
+//     icon: FileHeart,
+//     name: '个人健康管理',
+//     href: '/solutions/personal',
+//     description: '科学评估·个性方案·全程跟进',
+//     features: ['健康评估', '运动指导', '饮食建议', '睡眠管理']
+//   },
+//   {
+//     icon: UsersRound,
+//     name: '企业健康管理',
+//     href: '/solutions/enterprise',
+//     description: '员工关爱·健康福利·团队活力',
+//     features: ['健康体检', '心理关怀', '团建活动', '健康讲座']
+//   },
+//   {
+//     icon: Brain,
+//     name: '智慧医疗服务',
+//     href: '/solutions/medical',
+//     description: 'AI诊断·远程问诊·快速响应',
+//     features: ['AI筛查', '专家问诊', '用药指导', '随访管理']
+//   },
+//   {
+//     icon: ChefHat,
+//     name: '营养健康服务',
+//     href: '/solutions/nutrition',
+//     description: '均衡饮食·营养规划·健康烹饪',
+//     features: ['营养评估', '膳食指导', '食谱推荐', '营养课堂']
+//   }
+// ]
 
 // 客服支持信息
 const SUPPORT_INFO = {
@@ -143,14 +133,14 @@ const SUPPORT_INFO = {
 }
 
 // 企业资质与荣誉
-const ACHIEVEMENTS = [
-  '国家高新技术企业',
-  '互联网医院牌照',
-  '医疗器械经营许可证',
-  '中国数字健康50强',
-  '年度健康科技创新企业',
-  '用户满意度五星级企业'
-]
+// const ACHIEVEMENTS = [
+//   '国家高新技术企业',
+//   '互联网医院牌照',
+//   '医疗器械经营许可证',
+//   '中国数字健康50强',
+//   '年度健康科技创新企业',
+//   '用户满意度五星级企业'
+// ]
 
 // 底部导航
 const FOOTER_NAVIGATION = {
@@ -189,9 +179,8 @@ const FOOTER_NAVIGATION = {
     { name: '免责声明', href: '/disclaimer' }
   ]
 }
-
 // 联系方式组件
-const ContactItem = ({ icon: Icon, title, content, description, time, className = '' }) => (
+const ContactItem = ({ icon: Icon, title, content, description, time, className = '' }: { icon: React.ComponentType<React.SVGProps<SVGSVGElement>>, title: string, content: string, description: string, time?: string, className?: string }) => (
   <div className={`group p-6 rounded-2xl bg-gradient-to-br from-slate-800/40 to-slate-800/20 
     hover:from-slate-800/60 hover:to-slate-800/40 backdrop-blur-lg transition-all duration-300 ${className}`}>
     <div className="flex items-start space-x-4">
@@ -216,7 +205,7 @@ const Newsletter = () => {
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubscribe = async (e) => {
+  const handleSubscribe = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     setIsLoading(true)
     // 模拟订阅请求
@@ -327,7 +316,7 @@ export default function Footer() {
             <div className="flex items-center mb-6 space-x-3">
               <div className="relative w-12 h-12">
                 <Image
-                  src="/logo.png" // 确保替换为实际的logo路径
+                  src="/public/logo.png" // 确保替换为实际的logo路径
                   alt={COMPANY_INFO.name}
                   fill
                   className="object-contain"

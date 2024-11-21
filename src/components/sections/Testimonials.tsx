@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Quote, MessageCircle, Star, Trophy, Users, BarChart3, BadgeCheck } from 'lucide-react'
+import { Quote, Star, Trophy, Users, BarChart3, BadgeCheck } from 'lucide-react'
 
 // 用户评价核心数据
 const TESTIMONIAL_METRICS = {

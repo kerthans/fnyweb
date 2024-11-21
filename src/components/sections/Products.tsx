@@ -3,8 +3,8 @@
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Check, Award, Sparkles, Shield, Users, Heart, ArrowRight, Star, Crown } from 'lucide-react'
+// import { Badge } from "@/components/ui/badge"
+import { Check, Shield, Users, Heart, ArrowRight, Star, Crown } from 'lucide-react'
 import Image from 'next/image'
 
 // 产品核心数据

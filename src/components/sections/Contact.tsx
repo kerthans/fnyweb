@@ -8,13 +8,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
 import { 
-  Phone, 
   Mail, 
   MapPin, 
   Clock,
   Send,
-  MessageSquare,
-  CheckCircle2,
   Loader2,
   Calendar,
   HeartPulse, // 可替换为医疗相关icon
@@ -146,8 +143,7 @@ export default function Contact() {
       
       toast({
         title: "提交成功",
-        description: "我们的专业医师会尽快与您联系！",
-        icon: <CheckCircle2 className="w-4 h-4 text-success" />
+        description: "我们的专业医师会尽快与您联系！"
       })
       
       setFormData({
@@ -156,7 +152,7 @@ export default function Contact() {
         phone: '',
         message: ''
       })
-    } catch (error) {
+    } catch {
       toast({
         title: "提交失败",
         description: "网络繁忙，请稍后重试",

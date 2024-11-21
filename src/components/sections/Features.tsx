@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card"
 import {
   Brain, Heart, Activity, Leaf,
   Shield, Dna, Users, LineChart,
-  Timer, Zap, Sparkles, Focus
+  Sparkles, Focus
 } from 'lucide-react'
 
 // 核心服务数据

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Image from 'next/image'
-import { Brain, Users, HeartPulse, Shield, Leaf, Activity } from 'lucide-react'
+import { Brain,HeartPulse, Leaf, Activity } from 'lucide-react'
 
 // 核心信息配置
 const HERO_CONFIG = {

@@ -26,8 +26,8 @@ const CONFIG = {
   },
 
   POSITION: {
-    DEFAULT_BOTTOM: 60,
-    DEFAULT_RIGHT: 60,
+    DEFAULT_BOTTOM: 25,
+    DEFAULT_RIGHT: 25,
     SNAP_THRESHOLD: 1000000, // 自动靠边的阈值(像素)
   },
 
@@ -229,7 +229,7 @@ export default function AIAssistant() {
       }))
     }
 
-    const handleMouseUp = (e: MouseEvent) => {
+    const handleMouseUp = () => {
       isDragging.current = false
       
       // 自动靠边

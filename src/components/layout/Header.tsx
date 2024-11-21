@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Heart, Activity, Apple, Users, UserCircle, MessageCircle, CircleUserRound, HeartPulse } from 'lucide-react'
+import { Heart, Activity, Apple, Users, MessageCircle, CircleUserRound, HeartPulse } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import {
   NavigationMenu,
