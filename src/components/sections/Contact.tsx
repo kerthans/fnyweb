@@ -181,7 +181,7 @@ export default function Contact() {
   return (
     <section id="contact" className="py-24 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-5" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
       </div>
 

@@ -316,7 +316,7 @@ export default function Footer() {
             <div className="flex items-center mb-6 space-x-3">
               <div className="relative w-12 h-12">
                 <Image
-                  src="/public/logo.png" // 确保替换为实际的logo路径
+                  src="/logo.png" // 确保替换为实际的logo路径
                   alt={COMPANY_INFO.name}
                   fill
                   className="object-contain"

@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
-import AIAssistant from '@/components/ui/AIAssistant'
+// import AIAssistant from '@/components/ui/AIAssistant'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -47,7 +47,7 @@ export default function RootLayout({
           <main className="min-h-screen">
             {children}
           </main>
-          <AIAssistant />
+          {/* <AIAssistant /> */}
           <Footer />
           <Toaster />
         </ThemeProvider>
