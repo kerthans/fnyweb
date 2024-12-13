@@ -52,7 +52,10 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleSmoothScroll = (e, href) => {
+  const handleSmoothScroll = (
+    e: React.MouseEvent<Element, MouseEvent>, 
+    href: string
+  ) => {
     e.preventDefault()
     const element = document.querySelector(href)
     if (element) {

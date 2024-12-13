@@ -1,20 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+// import { useState } from 'react'
 import Image from 'next/image'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+// import { Button } from "@/components/ui/button"
+// import { Input } from "@/components/ui/input"
 import { 
   Sparkles,
-  Mail,
-  Phone,
-  ScrollText,
+  // Mail,
+  // Phone,
+  // ScrollText,
   Activity,
   Shield,
   HandHeart,
-  Send,
-  MessageSquareText,
-  Siren,
+  // Send,
+  // MessageSquareText,
+  // Siren,
 } from 'lucide-react'
 
 // 简化的企业信息
@@ -53,17 +53,17 @@ const SERVICE_COMMITMENTS = [
 ]
 
 // 简化的联系信息
-const CONTACT_INFO = {
-  service: {
-    phone: '400-888-9999',
-    hours: '09:00-22:00',
-    email: 'service@fnyhealth.com'
-  },
-  emergency: {
-    phone: '400-999-9999',
-    hours: '24小时'
-  }
-}
+// const CONTACT_INFO = {
+//   service: {
+//     phone: '400-888-9999',
+//     hours: '09:00-22:00',
+//     email: 'service@fnyhealth.com'
+//   },
+//   emergency: {
+//     phone: '400-999-9999',
+//     hours: '24小时'
+//   }
+// }
 
 // 单页导航
 const PAGE_SECTIONS = [
@@ -74,25 +74,25 @@ const PAGE_SECTIONS = [
 ]
 
 // 联系方式组件
-const ContactItem = ({ icon: Icon, title, content, description, time }) => (
-  <div className="group p-6 rounded-2xl bg-gradient-to-br from-slate-800/40 to-slate-800/20 
-    hover:from-slate-800/60 hover:to-slate-800/40 backdrop-blur-lg transition-all duration-300">
-    <div className="flex items-start space-x-4">
-      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/80 to-secondary/80 
-        flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-        <Icon className="w-6 h-6 text-white" />
-      </div>
-      <div>
-        <h4 className="font-medium text-sm text-slate-400 mb-1">{title}</h4>
-        <p className="text-lg font-semibold mb-1 gradient-primary">{content}</p>
-        <p className="text-sm text-slate-400">{description}</p>
-        {time && (
-          <p className="text-xs text-slate-500 mt-2">服务时间: {time}</p>
-        )}
-      </div>
-    </div>
-  </div>
-)
+// const ContactItem = ({ icon: Icon, title, content, description, time }) => (
+//   <div className="group p-6 rounded-2xl bg-gradient-to-br from-slate-800/40 to-slate-800/20 
+//     hover:from-slate-800/60 hover:to-slate-800/40 backdrop-blur-lg transition-all duration-300">
+//     <div className="flex items-start space-x-4">
+//       <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/80 to-secondary/80 
+//         flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+//         <Icon className="w-6 h-6 text-white" />
+//       </div>
+//       <div>
+//         <h4 className="font-medium text-sm text-slate-400 mb-1">{title}</h4>
+//         <p className="text-lg font-semibold mb-1 gradient-primary">{content}</p>
+//         <p className="text-sm text-slate-400">{description}</p>
+//         {time && (
+//           <p className="text-xs text-slate-500 mt-2">服务时间: {time}</p>
+//         )}
+//       </div>
+//     </div>
+//   </div>
+// )
 
 // 简化版Newsletter组件
 // const Newsletter = () => {
