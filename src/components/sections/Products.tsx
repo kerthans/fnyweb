@@ -194,7 +194,7 @@ const animations = {
 
 export default function Products() {
   return (
-    <section className="relative py-24">
+    <section id ='products' className="relative py-24">
       <div className="container">
         {/* 头部内容 */}
         <motion.div

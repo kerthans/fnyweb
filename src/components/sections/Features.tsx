@@ -156,7 +156,7 @@ const animations = {
 
 export default function Features() {
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section id ='features'className="relative py-24 overflow-hidden">
       <div className="container">
         {/* 头部内容 */}
         <motion.div

@@ -150,7 +150,7 @@ const animations = {
 
 export default function Testimonials() {
   return (
-    <section className="relative py-24">
+    <section id ='testimonials' className="relative py-24">
       <div className="container">
         {/* 头部内容 */}
         <motion.div

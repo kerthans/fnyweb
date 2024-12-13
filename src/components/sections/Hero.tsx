@@ -63,7 +63,7 @@ const animations = {
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+    <section id="hero" className="relative min-h-[90vh] flex items-center overflow-hidden">
       {/* 背景层 */}
       <div className="absolute inset-0">
         {/* 替换为适合的抽象医疗背景图片 */}
@@ -169,13 +169,13 @@ const Hero: React.FC = () => {
               
               {/* 主图 - 建议使用立体感强的3D医疗科技场景图 */}
               {/* 图片要求：透明背景、主色调协调、富有科技感的3D医疗场景 */}
-              <Image
+              {/* <Image
                 src="/images/hero-main.png"
                 alt="Digital Health Technology"
                 fill
                 className="object-contain relative z-10"
                 priority
-              />
+              /> */}
 
               {/* 特征卡片 */}
               {HERO_CONFIG.features.map((feature, index) => (

@@ -1,23 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { Heart, Activity, Apple, Users, MessageCircle, CircleUserRound, HeartPulse } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
 
-// 系统配置与内容管理
+// 系统配置
 const SYSTEM_CONFIG = {
   brand: {
     name: "福能源健康",
-    // logo: "/logo.svg", // 后续替换为实际logo
+    logo: "/logo.png",
     slogan: "守护每个生命的活力"
   },
   contact: {
@@ -26,58 +16,27 @@ const SYSTEM_CONFIG = {
   }
 }
 
-// 导航结构配置
+// 简化的导航配置
 const navigation = [
   {
-    title: "健康服务",
-    featured: true,
-    items: [
-      {
-        title: "个人健康管理",
-        href: "/services/personal",
-        description: "定制专属健康管理方案",
-        icon: HeartPulse
-      },
-      {
-        title: "科学营养规划",
-        href: "/services/nutrition",
-        description: "平衡营养，健康生活",
-        icon: Apple
-      },
-      {
-        title: "运动健康指导",
-        href: "/services/fitness",
-        description: "专业运动指导与康复",
-        icon: Activity
-      }
-    ]
+    title: "首页",
+    href: "#hero"
   },
   {
-    title: "解决方案",
-    items: [
-      {
-        title: "企业健康管理",
-        href: "/solutions/enterprise",
-        description: "提升企业健康管理水平",
-        icon: Users
-      },
-      {
-        title: "家庭健康服务",
-        href: "/solutions/family",
-        description: "呵护全家健康生活",
-        icon: Heart
-      }
-    ]
+    title: "特色服务",
+    href: "#features"
   },
   {
-    title: "关于我们",
-    href: "/about",
-    icon: CircleUserRound
+    title: "产品介绍",
+    href: "#products"
+  },
+  {
+    title: "客户评价",
+    href: "#testimonials"
   },
   {
     title: "联系我们",
-    href: "/contact",
-    icon: MessageCircle
+    href: "#contact"
   }
 ]
 
@@ -93,6 +52,15 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const handleSmoothScroll = (e, href) => {
+    e.preventDefault()
+    const element = document.querySelector(href)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+      setIsMobileMenuOpen(false)
+    }
+  }
+
   return (
     <header 
       className={`fixed w-full z-50 transition-all duration-500 ${
@@ -104,11 +72,16 @@ export default function Header() {
       <div className="container mx-auto">
         <div className="flex items-center justify-between h-20">
           {/* 品牌标识区 */}
-          <Link 
-            href="/" 
-            className="flex items-center space-x-3 group"
+          <a 
+            href="#hero"
+            className="flex items-center space-x-4 group"
+            onClick={(e) => handleSmoothScroll(e, '#hero')}
           >
-            <HeartPulse className="w-8 h-8 text-primary transition-all duration-500 group-hover:scale-110" />
+            <img 
+              src={SYSTEM_CONFIG.brand.logo} 
+              alt={SYSTEM_CONFIG.brand.name}
+              className="w-12 h-12 object-contain transition-all duration-500 group-hover:scale-105"
+            />
             <div className="flex flex-col">
               <span className="text-lg font-bold gradient-primary">
                 {SYSTEM_CONFIG.brand.name}
@@ -117,61 +90,22 @@ export default function Header() {
                 {SYSTEM_CONFIG.brand.slogan}
               </span>
             </div>
-          </Link>
+          </a>
 
           {/* 桌面端导航 */}
           <div className="hidden lg:flex items-center space-x-8">
-            <NavigationMenu className="hidden lg:flex">
-              <NavigationMenuList>
-                {navigation.map((item) => (
-                  <NavigationMenuItem key={item.title}>
-                    {item.items ? (
-                      <>
-                        <NavigationMenuTrigger 
-                          className={`${
-                            item.featured ? 'text-primary font-medium' : ''
-                          }`}
-                        >
-                          {item.title}
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <ul className="grid gap-3 p-6 w-[400px] md:w-[500px]">
-                            {item.items.map((subItem) => (
-                              <li key={subItem.title}>
-                                <NavigationMenuLink asChild>
-                                  <Link
-                                    href={subItem.href}
-                                    className="flex items-start space-x-4 rounded-lg p-3 hover:bg-muted transition-colors"
-                                  >
-                                    <subItem.icon className="w-5 h-5 text-primary mt-1" />
-                                    <div>
-                                      <div className="font-medium mb-1">
-                                        {subItem.title}
-                                      </div>
-                                      <p className="text-sm text-muted-foreground leading-snug">
-                                        {subItem.description}
-                                      </p>
-                                    </div>
-                                  </Link>
-                                </NavigationMenuLink>
-                              </li>
-                            ))}
-                          </ul>
-                        </NavigationMenuContent>
-                      </>
-                    ) : (
-                      <Link 
-                        href={item.href}
-                        className="flex items-center px-4 py-2 text-sm font-medium hover:text-primary transition-colors"
-                      >
-                        <item.icon className="w-4 h-4 mr-2" />
-                        {item.title}
-                      </Link>
-                    )}
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
+            <nav className="flex items-center space-x-6">
+              {navigation.map((item) => (
+                <a
+                  key={item.title}
+                  href={item.href}
+                  onClick={(e) => handleSmoothScroll(e, item.href)}
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                >
+                  {item.title}
+                </a>
+              ))}
+            </nav>
 
             {/* 联系咨询按钮 */}
             <div className="flex items-center space-x-4">
@@ -181,7 +115,7 @@ export default function Header() {
               </div>
               <Button 
                 className="cta-button"
-                onClick={() => window.location.href = '/consultation'}
+                onClick={(e) => handleSmoothScroll(e, '#contact')}
               >
                 {SYSTEM_CONFIG.contact.consultation}
               </Button>
@@ -217,49 +151,25 @@ export default function Header() {
         `}>
           <nav className="container px-4 pt-4 pb-8 h-[calc(100vh-5rem)] overflow-y-auto">
             {navigation.map((item) => (
-              <div key={item.title} className="py-2">
-                {item.items ? (
-                  <div className="space-y-3">
-                    <div className="font-medium text-lg px-2 py-2 text-primary">
-                      {item.title}
-                    </div>
-                    <div className="grid gap-2">
-                      {item.items.map((subItem) => (
-                        <Link
-                          key={subItem.title}
-                          href={subItem.href}
-                          className="flex items-center space-x-3 px-2 py-3 rounded-lg hover:bg-muted"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          <subItem.icon className="w-5 h-5 text-primary" />
-                          <div>
-                            <div className="font-medium">{subItem.title}</div>
-                            <p className="text-sm text-muted-foreground">
-                              {subItem.description}
-                            </p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className="flex items-center space-x-3 px-2 py-3 text-base hover:text-primary"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <item.icon className="w-5 h-5" />
-                    <span>{item.title}</span>
-                  </Link>
-                )}
-              </div>
+              <a
+                key={item.title}
+                href={item.href}
+                onClick={(e) => handleSmoothScroll(e, item.href)}
+                className="flex items-center px-2 py-3 text-base hover:text-primary border-b border-border"
+              >
+                {item.title}
+              </a>
             ))}
             <div className="mt-6 px-2">
               <div className="text-center mb-4">
                 <p className="text-sm text-muted-foreground">咨询热线</p>
                 <p className="text-lg font-medium">{SYSTEM_CONFIG.contact.phone}</p>
               </div>
-              <Button className="w-full cta-button" size="lg">
+              <Button 
+                className="w-full cta-button" 
+                size="lg"
+                onClick={(e) => handleSmoothScroll(e, '#contact')}
+              >
                 {SYSTEM_CONFIG.contact.consultation}
               </Button>
             </div>
