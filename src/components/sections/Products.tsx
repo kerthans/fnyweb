@@ -1,10 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-// import { Badge } from "@/components/ui/badge"
-import { Check, Shield, Users, Heart, ArrowRight, Star, Crown } from 'lucide-react'
+import { Switch } from "@/components/ui/switch"
+import { Check, Shield, Users, Heart, ArrowRight, Star, Crown, Brain } from 'lucide-react'
 import Image from 'next/image'
 
 // 产品核心数据
@@ -15,28 +16,13 @@ const PRODUCT_METRICS = {
   EXPERT_COUNT: '100+'
 } as const
 
-// 服务等级数据
-const SERVICE_LEVELS = {
-  RESPONSE_TIME: '15分钟',
-  EXPERT_CONSULT: '7×24小时',
-  DATA_SECURITY: 'ISO27001',
-  SERVICE_GUARANTEE: '100%退款保证'
-} as const
-
-// 产品特权数据
-const PRIVILEGES = {
-  VIP_EXPERTS: '三甲医院专家团队',
-  AI_ANALYSIS: 'AI智能健康分析',
-  FULL_RECORDS: '全周期健康档案',
-  PRIORITY_SERVICE: '优先服务通道'
-} as const
-
+// 基础产品配置
 const products = [
   {
-    id: 'personal',
-    title: "个人健康管家",
-    subtitle: "适合个人用户",
-    description: "AI智能分析 + 专家一对一指导",
+    id: 'ua1290',
+    title: "UA1290石榴饮",
+    subtitle: "基础版",
+    description: "AI智能分析 + 专家指导",
     price: "199",
     originalPrice: "399",
     period: "月",
@@ -46,43 +32,75 @@ const products = [
       response: "15分钟"
     },
     features: [
-      {
-        title: PRIVILEGES.AI_ANALYSIS,
-        desc: "24小时健康监测"
-      },
-      {
-        title: "专业运动指导",
-        desc: "私人教练定制"
-      },
-      {
-        title: "营养方案定制",
-        desc: "营养师一对一"
-      },
-      {
-        title: SERVICE_LEVELS.EXPERT_CONSULT,
-        desc: "专家在线问诊"
-      },
-      {
-        title: PRIVILEGES.FULL_RECORDS,
-        desc: "动态健康档案"
-      },
-      {
-        title: "基因检测报告",
-        desc: "精准健康指导"
-      }
+      { title: "AI健康分析", desc: "24小时监测" },
+      { title: "运动指导", desc: "私教定制" },
+      { title: "营养方案", desc: "营养师定制" },
+      { title: "在线问诊", desc: "专家咨询" },
+      { title: "健康档案", desc: "动态更新" },
+      { title: "基因检测", desc: "精准指导" }
     ],
-    image: "/images/products/personal.jpg", // 待替换为合适的健康生活图片
-    popular: true,
-    badge: "最受欢迎",
+    image: "/images/products/ua1290.png",
+    defaultPopular: true,
     color: "primary",
-    icon: Heart,
-    delay: 0.2
+    icon: Heart
   },
   {
-    id: 'enterprise',
-    title: "企业健康管理",
-    subtitle: "适合企业团队",
-    description: "专业团队健康管理解决方案",
+    id: 'shenguo',
+    title: "圣果天浆",
+    subtitle: "专业版",
+    description: "全方位营养解决方案",
+    price: "399",
+    originalPrice: "799",
+    period: "月",
+    metrics: {
+      users: "15万+",
+      satisfaction: "97%",
+      response: "10分钟"
+    },
+    features: [
+      { title: "营养评估", desc: "专业分析" },
+      { title: "膳食指导", desc: "定制方案" },
+      { title: "营养补充", desc: "科学搭配" },
+      { title: "体质调理", desc: "个性化建议" },
+      { title: "营养监测", desc: "动态跟踪" },
+      { title: "专家指导", desc: "一对一服务" }
+    ],
+    image: "/images/products/shenguo.png",
+    defaultPopular: false,
+    color: "secondary",
+    icon: Brain
+  },
+  {
+    id: 'fushuibao',
+    title: "福睡宝",
+    subtitle: "尊享版",
+    description: "高端定制健康管理",
+    price: "599",
+    originalPrice: "1199",
+    period: "月",
+    metrics: {
+      users: "5万+",
+      satisfaction: "99%",
+      response: "5分钟"
+    },
+    features: [
+      { title: "睡眠监测", desc: "智能分析" },
+      { title: "深度调理", desc: "个性方案" },
+      { title: "心理疏导", desc: "专家咨询" },
+      { title: "睡眠报告", desc: "每周更新" },
+      { title: "生物节律", desc: "智能调整" },
+      { title: "VIP服务", desc: "专属管家" }
+    ],
+    image: "/images/products/fushuibao.png",
+    defaultPopular: false,
+    color: "accent",
+    icon: Shield
+  },
+  {
+    id: '康复馨-初原肌底修复喷雾',
+    title: "康复馨-初原肌底修复喷雾",
+    subtitle: "企业版",
+    description: "团队健康管理方案",
     price: "999",
     originalPrice: "1999",
     period: "月",
@@ -92,81 +110,17 @@ const products = [
       response: "12小时"
     },
     features: [
-      {
-        title: "团队健康档案",
-        desc: "一键管理追踪"
-      },
-      {
-        title: "年度体检规划",
-        desc: "专业体检机构"
-      },
-      {
-        title: "职业病防护",
-        desc: "预防为主"
-      },
-      {
-        title: "团队活动策划",
-        desc: "健康生活方式"
-      },
-      {
-        title: "健康讲座培训",
-        desc: "专家现场指导"
-      },
-      {
-        title: "专属服务团队",
-        desc: "7×24小时响应"
-      }
+      { title: "团队管理", desc: "一键管理" },
+      { title: "体检规划", desc: "年度体检" },
+      { title: "职业防护", desc: "预防为主" },
+      { title: "活动策划", desc: "团队活动" },
+      { title: "健康培训", desc: "专家指导" },
+      { title: "专属团队", desc: "7×24服务" }
     ],
-    image: "/images/products/enterprise.jpg", // 待替换为企业团队健康管理场景
-    popular: false,
-    color: "accent",
-    icon: Users,
-    delay: 0.3
-  },
-  {
-    id: 'family',
-    title: "家庭健康卫士",
-    subtitle: "适合全家使用",
-    description: "呵护全家人的健康管理专家",
-    price: "599",
-    originalPrice: "1199",
-    period: "月",
-    metrics: {
-      users: "5万+",
-      satisfaction: "97%",
-      response: "10分钟"
-    },
-    features: [
-      {
-        title: "家庭成员档案",
-        desc: "多人健康管理"
-      },
-      {
-        title: "亲子健康指导",
-        desc: "专业育儿建议"
-      },
-      {
-        title: "家庭营养方案",
-        desc: "营养均衡搭配"
-      },
-      {
-        title: "遗传风险评估",
-        desc: "基因筛查预警"
-      },
-      {
-        title: "远程医疗咨询",
-        desc: "专家在线问诊"
-      },
-      {
-        title: "家庭医生服务",
-        desc: "一对一专属"
-      }
-    ],
-    image: "/images/products/family.jpg", // 待替换为温馨家庭健康场景
-    popular: false,
-    color: "secondary",
-    icon: Shield,
-    delay: 0.4
+    image: "/images/products/康复馨-初原肌底修复喷雾.png",
+    defaultPopular: false,
+    color: "primary",
+    icon: Users
   }
 ]
 
@@ -193,8 +147,11 @@ const animations = {
 }
 
 export default function Products() {
+  // 控制是否显示"最受欢迎"标签
+  const [showPopular, setShowPopular] = useState(true)
+
   return (
-    <section id ='products' className="relative py-24">
+    <section id="products" className="relative py-24">
       <div className="container">
         {/* 头部内容 */}
         <motion.div
@@ -202,7 +159,7 @@ export default function Products() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-12"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -214,28 +171,37 @@ export default function Products() {
           >
             <Crown className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-primary">
-              智慧健康管理解决方案
+              福能源生物科技出品
             </span>
           </motion.div>
           <br />
-          <h2 className="section-title mb-6">
-            选择您的专属健康方案
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="section-title mb-6">现有产品系列</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             基于{PRODUCT_METRICS.ACTIVE_USERS}用户数据分析，为不同人群定制专业的健康管理服务
           </p>
+          
+          {/* 添加最受欢迎标签控制开关 */}
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-sm text-muted-foreground">显示最受欢迎标签</span>
+            <Switch 
+              checked={showPopular}
+              onCheckedChange={setShowPopular}
+            />
+          </div>
         </motion.div>
 
-        {/* 产品卡片 */}
+        {/* 产品卡片网格 */}
         <motion.div
           variants={animations.container}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {products.map((product) => {
             const Icon = product.icon
+            const isPopular = showPopular && product.defaultPopular
+
             return (
               <motion.div
                 key={product.id}
@@ -244,10 +210,10 @@ export default function Products() {
               >
                 <Card className={`relative h-full overflow-hidden hover-card
                   backdrop-blur-sm bg-card/95 
-                  ${product.popular ? 'border-[2px] border-primary' : 'border border-border/50'}`}
+                  ${isPopular ? 'border-[2px] border-primary' : 'border border-border/50'}`}
                 >
                   {/* 热门标签 */}
-                  {product.popular && (
+                  {isPopular && (
                     <div className="absolute -right-12 top-8 rotate-45 z-20">
                       <div className="bg-gradient-to-r from-primary to-primary/80 
                         text-white text-xs font-semibold py-1 px-12">
@@ -257,7 +223,7 @@ export default function Products() {
                   )}
 
                   {/* 卡片内容 */}
-                  <div className="p-6 lg:p-8">
+                  <div className="p-6">
                     {/* 标题区域 */}
                     <div className="flex items-center gap-3 mb-6">
                       <div className={`w-12 h-12 rounded-xl bg-${product.color}/10 
@@ -277,7 +243,7 @@ export default function Products() {
                     </div>
 
                     {/* 图片区域 */}
-                    <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden">
+                    <div className="relative w-full h-40 mb-6 rounded-xl overflow-hidden">
                       <Image
                         src={product.image}
                         alt={product.title}
@@ -290,12 +256,12 @@ export default function Products() {
                     </div>
 
                     {/* 价格区域 */}
-                    <div className="text-center mb-8">
+                    <div className="text-center mb-6">
                       <p className="text-sm text-muted-foreground mb-2">
                         {product.description}
                       </p>
                       <div className="flex items-baseline justify-center gap-2">
-                        <span className="text-4xl font-bold gradient-primary">
+                        <span className="text-3xl font-bold gradient-primary">
                           ¥{product.price}
                         </span>
                         <span className="text-muted-foreground">/{product.period}</span>
@@ -308,9 +274,9 @@ export default function Products() {
                     </div>
 
                     {/* 功能特性列表 */}
-                    <div className="space-y-4 mb-8">
+                    <div className="space-y-3 mb-6">
                       {product.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-start gap-3">
+                        <div key={idx} className="flex items-start gap-2">
                           <div className={`w-5 h-5 rounded-full bg-${product.color}/10 
                             flex items-center justify-center flex-shrink-0 mt-0.5`}>
                             <Check className={`w-3 h-3 text-${product.color}`} />
@@ -326,15 +292,15 @@ export default function Products() {
                     </div>
 
                     {/* 服务指标 */}
-                    <div className="grid grid-cols-3 gap-4 mb-8">
+                    <div className="grid grid-cols-3 gap-2 mb-6 text-sm">
                       {Object.entries(product.metrics).map(([key, value]) => (
                         <div key={key} className="text-center">
-                          <div className={`text-lg font-bold text-${product.color}`}>
+                          <div className={`font-bold text-${product.color}`}>
                             {value}
                           </div>
                           <div className="text-xs text-muted-foreground">
-                            {key === 'users' ? '活跃用户' : 
-                             key === 'satisfaction' ? '满意度' : '响应时间'}
+                            {key === 'users' ? '用户' : 
+                             key === 'satisfaction' ? '满意度' : '响应'}
                           </div>
                         </div>
                       ))}
@@ -342,12 +308,12 @@ export default function Products() {
 
                     {/* 按钮 */}
                     <Button 
-                      className={`w-full h-12 rounded-full group/button
-                        ${product.popular ? 
+                      className={`w-full h-11 rounded-full group/button
+                        ${isPopular ? 
                           'bg-gradient-to-r from-primary to-primary/80' : 
                           'border-2 border-border hover:border-primary'
                         }`}
-                      variant={product.popular ? "default" : "outline"}
+                      variant={isPopular ? "default" : "outline"}
                     >
                       <span className="mr-2">立即开启</span>
                       <ArrowRight className="w-4 h-4 transform 
@@ -370,14 +336,14 @@ export default function Products() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.8 }}
-          className="mt-20 text-center"
+          transition={{ delay: 0.6 }}
+          className="mt-16 text-center"
         >
           <div className="flex flex-col items-center gap-4">
             <div className="flex items-center gap-2">
               <Shield className="w-5 h-5 text-primary" />
               <span className="text-muted-foreground">
-                {SERVICE_LEVELS.SERVICE_GUARANTEE}
+                100%退款保证
               </span>
             </div>
             <Button 
