@@ -37,7 +37,7 @@ const HERO_CONFIG = {
       icon: Microscope,
       title: "研发实力",
       subtitle: "省级重点实验室",
-      color: "secondary"
+      color: "secondary" 
     },
     {
       icon: GraduationCap,
@@ -70,75 +70,95 @@ const HERO_CONFIG = {
   ]
 }
 
-// 动画配置
+// 优化后的动画配置
 const animations = {
   fadeIn: {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.8, ease: "easeOut" }
   },
-  float: {
+  floatFeature: (index: number) => ({
     animate: {
-      y: [0, -15, 0],
-      rotate: [0, -1, 0]
+      y: [0, -6 - index * 2, 0],
+      rotate: [0, -0.3, 0]
     },
     transition: {
-      duration: 6,
+      duration: 5 + index,
       repeat: Infinity,
-      ease: "easeInOut"
+      ease: "easeInOut",
+      delay: index * 0.3
     }
-  }
+  }),
+  floatProduct: (index: number) => ({
+    animate: {
+      y: [0, -5 - index * 2, 0],
+      rotate: [0, 0.3, 0]
+    },
+    transition: {
+      duration: 4 + index * 2,
+      repeat: Infinity,
+      ease: "easeInOut",
+      delay: index * 0.4
+    }
+  })
 }
 
 const Hero: React.FC = () => {
   return (
-    <section id="hero" className="relative min-h-[90vh] flex items-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
       {/* 背景层 */}
       <div className="absolute inset-0">
         <Image
           src="/images/hero-bg.jpg"
           alt="Background"
           fill
-          className="object-cover opacity-10"
+          priority
+          className="object-cover opacity-5 dark:opacity-10 select-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.8)_0%,transparent_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.6)_0%,transparent_100%)]" />
       </div>
 
-      <div className="container relative z-10 py-20">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      {/* 主要内容区域 */}
+      <div className="container relative z-10">
+        {/* 顶部留白 */}
+        <div className="h-20"></div>
+        
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-8 lg:py-12">
           {/* 左侧内容区 */}
-          <motion.div {...animations.fadeIn} className="space-y-8">
+          <motion.div {...animations.fadeIn} className="space-y-7">
             {/* 标签 */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full 
-                         bg-white/90 dark:bg-white/10 backdrop-blur-md shadow-sm
-                         border border-primary/10"
+                         bg-white/95 dark:bg-white/5 backdrop-blur-md 
+                         border border-primary/20 hover:border-primary/30 transition-colors"
             >
-              <Leaf className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">{HERO_CONFIG.tagline}</span>
+              <Leaf className="w-3.5 h-3.5 text-primary animate-pulse" />
+              <span className="text-xs font-medium text-primary tracking-wide">{HERO_CONFIG.tagline}</span>
             </motion.div>
 
-            {/* 标题 */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              <span className="gradient-primary">{HERO_CONFIG.headline.gradient}</span>
-              <br />
-              <span className="text-foreground">{HERO_CONFIG.headline.normal}</span>
-            </h1>
+            {/* 标题区域 */}
+            <div className="space-y-4">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight">
+                <span className="gradient-primary inline-block mb-2">{HERO_CONFIG.headline.gradient}</span>
+                <br />
+                <span className="text-foreground">{HERO_CONFIG.headline.normal}</span>
+              </h1>
 
-            {/* 描述 */}
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-xl">
-              {HERO_CONFIG.description}
-            </p>
+              <p className="text-base text-muted-foreground leading-relaxed max-w-xl">
+                {HERO_CONFIG.description}
+              </p>
+            </div>
 
             {/* 按钮组 */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 pt-2">
               <Button 
                 size="lg" 
-                className="cta-button group text-lg"
+                className="cta-button group text-sm h-11
+                           hover:scale-105 transition-all duration-300"
               >
                 咨询产品
                 <motion.span
@@ -152,27 +172,30 @@ const Hero: React.FC = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="text-lg rounded-full border-2 border-primary/20 
-                           hover:bg-primary/10 hover:border-primary/30"
+                className="text-sm h-11 rounded-full 
+                           border-2 border-primary/20 hover:bg-primary/5 
+                           hover:border-primary/30 hover:scale-105 
+                           transition-all duration-300"
               >
                 产品系列
               </Button>
             </div>
 
             {/* 数据统计 */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-6 pt-6">
               {HERO_CONFIG.stats.map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 + index * 0.1 }}
-                  className="text-center"
+                  className="text-center p-3 rounded-lg hover:bg-primary/5 
+                             transition-colors duration-300"
                 >
-                  <div className="text-2xl font-bold gradient-primary mb-1">
+                  <div className="text-xl font-bold gradient-primary mb-1">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs text-muted-foreground">
                     {stat.label}
                   </div>
                 </motion.div>
@@ -180,14 +203,19 @@ const Hero: React.FC = () => {
             </div>
 
             {/* 认证信息 */}
-            <div className="flex flex-wrap gap-3 pt-4">
+            <div className="flex flex-wrap gap-2 pt-4">
               {HERO_CONFIG.certifications.map((cert, index) => (
-                <div
+                <motion.div
                   key={index}
-                  className="px-3 py-1 rounded-full text-xs bg-primary/5 text-primary"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.6 + index * 0.1 }}
+                  className="px-3 py-1 rounded-full text-xs bg-primary/5 
+                             text-primary hover:bg-primary/10 transition-colors 
+                             duration-300 cursor-default"
                 >
                   {cert}
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
@@ -197,34 +225,38 @@ const Hero: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative hidden lg:block"
+            className="relative hidden lg:block h-[600px]"
           >
-            <div className="relative w-full aspect-square">
+            <div className="relative w-full h-full">
               {/* 主图光晕效果 */}
-              <div className="absolute inset-0 bg-gradient-to-tr 
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                            w-[400px] h-[400px] bg-gradient-to-tr 
                             from-primary/20 via-secondary/20 to-accent/20 
-                            rounded-full blur-3xl animate-pulse-soft" />
+                            rounded-full blur-3xl animate-pulse-slow opacity-50" />
               
               {/* 特征卡片 */}
               {HERO_CONFIG.features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  {...animations.float}
+                  {...animations.floatFeature(index)}
                   style={{ 
-                    top: `${25 * index}%`,
-                    right: index % 2 ? 'auto' : '10%',
-                    left: index % 2 ? '10%' : 'auto'
+                    top: `${20 + index * 25}%`,
+                    right: index % 2 ? 'auto' : '5%',
+                    left: index % 2 ? '5%' : 'auto'
                   }}
-                  className="absolute glass-effect p-4 rounded-xl shadow-elevation"
+                  className="absolute glass-effect p-4 rounded-xl
+                           hover:scale-105 transition-all duration-300 cursor-default
+                           border border-white/10 bg-white/5 backdrop-blur-lg
+                           shadow-md hover:shadow-lg"
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-lg bg-${feature.color}/10 
+                    <div className={`w-10 h-10 rounded-lg bg-${feature.color}/10 
                                    flex items-center justify-center`}>
-                      <feature.icon className={`w-6 h-6 text-${feature.color}`} />
+                      <feature.icon className={`w-5 h-5 text-${feature.color}`} />
                     </div>
                     <div>
-                      <div className="font-medium">{feature.title}</div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-sm font-medium">{feature.title}</div>
+                      <div className="text-xs text-muted-foreground">
                         {feature.subtitle}
                       </div>
                     </div>
@@ -236,22 +268,28 @@ const Hero: React.FC = () => {
               {HERO_CONFIG.products.highlight.map((product, index) => (
                 <motion.div
                   key={index}
-                  {...animations.float}
+                  {...animations.floatProduct(index)}
                   style={{
                     bottom: `${20 + index * 25}%`,
-                    right: index % 2 ? '15%' : 'auto',
-                    left: index % 2 ? 'auto' : '15%'
+                    right: index % 2 ? '8%' : 'auto',
+                    left: index % 2 ? 'auto' : '8%'
                   }}
-                  className="absolute glass-effect p-4 rounded-xl shadow-elevation"
+                  className="absolute glass-effect p-4 rounded-xl
+                           hover:scale-105 transition-all duration-300 cursor-default
+                           border border-white/10 bg-white/5 backdrop-blur-lg
+                           shadow-md hover:shadow-lg"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <product.icon className="w-5 h-5 text-primary" />
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 
+                                  flex items-center justify-center">
+                      <product.icon className="w-4 h-4 text-primary" />
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs text-primary font-medium">{product.tag}</span>
-                      <span className="font-medium">{product.name}</span>
-                      <span className="text-sm text-muted-foreground">{product.desc}</span>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-[10px] font-medium text-primary 
+                                     bg-primary/10 px-2 py-0.5 rounded-full 
+                                     w-fit">{product.tag}</span>
+                      <span className="text-sm font-medium">{product.name}</span>
+                      <span className="text-xs text-muted-foreground">{product.desc}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -264,7 +302,7 @@ const Hero: React.FC = () => {
       {/* 底部装饰 */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg
-          className="w-full text-background"
+          className="w-full h-12 sm:h-16 lg:h-20 text-background select-none"
           viewBox="0 0 1440 120"
           fill="none"
           preserveAspectRatio="none"

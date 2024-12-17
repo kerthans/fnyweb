@@ -3,124 +3,127 @@
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Quote, Star, Trophy, Users, BarChart3, BadgeCheck } from 'lucide-react'
+import { Quote, Trophy, Users, BadgeCheck, Building2, GraduationCap } from 'lucide-react'
 
 // 用户评价核心数据
 const TESTIMONIAL_METRICS = {
   SATISFACTION: '98%',
-  TOTAL_REVIEWS: '10000+',
+  TOTAL_REVIEWS: '20000+', // 基于员工规模
   AVERAGE_RATING: '4.9',
   RECOMMEND_RATE: '96%'
 } as const
 
-// 服务认证信息
+// 集团认证信息
 const SERVICE_AWARDS = {
-  QUALITY: '年度健康服务金奖',
-  SATISFACTION: '用户满意度五星认证',
-  INFLUENCE: '行业影响力品牌',
-  INNOVATION: '健康科技创新奖'
+  INDUSTRY: '中国医药工业百强企业',
+  FAMOUS: '中国驰名商标',
+  BRAND: '中国制药品牌',
+  TECH: '国家企业技术中心'
 } as const
 
 // 专业评价来源
 const REVIEW_SOURCES = {
-  MEDICAL: '权威医疗机构认证',
-  PLATFORM: '第三方服务平台认证',
-  MEDIA: '主流媒体好评',
-  USERS: '真实用户评价'
+  MEDICAL: '国家级医药认证',
+  PLATFORM: '省级重点实验室认证',
+  RESEARCH: '国家博士后工作站',
+  ENTERPRISE: '高新技术企业认证'
 } as const
 
 // 用户见证数据
 const testimonials = [
   {
-    id: 'executive',
+    id: 'enterprise',
     content: [
-      "福能源的健康管理服务让我深感专业。",
-      "通过AI智能分析系统和专家一对一指导，为我定制了完整的健康方案。",
-      "三个月以来，不仅体重得到有效控制，整体精力和状态都有显著提升。",
-      "现在的生活更有规律，充满活力！"
+      "作为一家大型医疗机构，我们一直在寻找可靠的医药合作伙伴。",
+      "好医生集团不仅提供优质的医药产品，更重要的是他们在生物医药创新领域的持续投入，",
+      "通过国家企业技术中心和省级重点实验室，为我们提供了全方位的医疗解决方案。",
+      "这种专注于创新的精神，让我们对合作充满信心。"
     ].join(" "),
-    author: "张女士",
-    title: "某500强企业副总裁",
-    organization: "科技行业",
-    avatar: "/images/testimonials/executive.jpg", // 待替换：优雅女性专业形象
+    author: "王院长",
+    title: "三甲医院院长",
+    organization: "医疗行业",
+    avatar: "/images/testimonials/hospital.jpg",
     rating: 5,
-    achievement: "BMI指数降低4个点",
-    duration: "3个月",
+    achievement: "合作超过10年",
+    duration: "长期合作",
     verified: true,
     featured: true,
-    tag: "管理者推荐",
+    tag: "行业认可",
     metrics: {
-      improvement: "35%",
-      category: "生活质量提升"
+      improvement: "90%",
+      category: "合作满意度"
     },
     delay: 0.1
   },
   {
-    id: 'athlete',
+    id: 'research',
     content: [
-      "作为专业运动教练，我对健康管理要求很高。",
-      "福能源的运动科学团队让我印象深刻，他们不仅提供专业的训练指导，",
-      "更通过精准数据分析，帮助我优化训练计划，提升训练效果。",
-      "真正做到了科学健身。"
+      "通过与好医生集团的产学研合作，",
+      "我们见证了企业在科研创新方面的投入和决心。",
+      "他们建立的国家级博士后工作站和省级院士工作站，",
+      "为推动医药行业的技术进步做出了重要贡献。",
+      "70余项国家省部级研发创新项目的成果，证明了他们在科研领域的实力。"
     ].join(" "),
-    author: "李先生",
-    title: "资深私人教练",
-    organization: "国际健身学院认证",
-    avatar: "/images/testimonials/athlete.jpg", // 待替换：专业运动教练形象
+    author: "张教授",
+    title: "知名高校教授",
+    organization: "生物医药研究",
+    avatar: "/images/testimonials/professor.jpg",
     rating: 5,
-    achievement: "训练效率提升40%",
-    duration: "6个月",
+    achievement: "联合研发突破",
+    duration: "5年",
     verified: true,
-    tag: "专业认可",
+    tag: "科研合作",
     metrics: {
-      improvement: "40%",
-      category: "训练效能"
+      improvement: "70+",
+      category: "研发项目"
     },
     delay: 0.2
   },
   {
-    id: 'enterprise',
+    id: 'business',
     content: [
-      "福能源为我们公司提供的员工健康管理服务非常全面。",
-      "从体检规划到心理健康咨询，再到团队运动课程，都照顾得很周到。",
-      "员工参与度和满意度都很高，",
-      "确实帮助企业打造了健康积极的职场氛围。"
+      "好医生集团在医药工业、商业、研发等七大板块的全面布局，",
+      "为我们提供了完整的产业链支持。",
+      "作为一家连续13年荣登中国医药工业百强的企业，",
+      "他们始终保持着高水准的产品质量和服务。",
+      "特别是在生物医药创新领域的持续投入，更让我们对未来充满期待。"
     ].join(" "),
-    author: "王总",
-    title: "人力资源总监",
-    organization: "某科技上市公司",
-    avatar: "/images/testimonials/hr.jpg", // 待替换：专业HR总监形象
+    author: "李总",
+    title: "医药连锁机构负责人",
+    organization: "医药商业",
+    avatar: "/images/testimonials/business.jpg",
     rating: 5,
-    achievement: "员工健康指数提升28%",
-    duration: "12个月",
+    achievement: "双向战略合作",
+    duration: "8年",
     verified: true,
-    tag: "企业之选",
+    tag: "战略伙伴",
     metrics: {
-      improvement: "89%",
-      category: "员工满意度"
+      improvement: "85%",
+      category: "业务增长"
     },
     delay: 0.3
   },
   {
-    id: 'lifestyle',
+    id: 'agriculture',
     content: [
-      "福能源的营养师团队特别专业。",
-      "他们不仅基于我的身体状况定制了营养方案，",
-      "还教会了我很多健康饮食的知识。",
-      "现在的我不仅气色更好，体重也控制得很理想。"
+      "好医生集团在中药材种养殖基地的建设上投入巨大，",
+      "作为农业合作伙伴，我们深深感受到企业对产品品质的追求。",
+      "他们建立的现代化种植基地和严格的质量管理体系，",
+      "不仅带动了当地农业发展，更确保了中药材的品质。",
+      "这种从源头把控质量的理念令人敬佩。"
     ].join(" "),
-    author: "刘女士",
-    title: "生活方式博主",
-    organization: "健康生活倡导者",
-    avatar: "/images/testimonials/lifestyle.jpg", // 待替换：气质博主形象
+    author: "陈主任",
+    title: "农业基地负责人",
+    organization: "中药材种植",
+    avatar: "/images/testimonials/agriculture.jpg",
     rating: 5,
-    achievement: "体重达标并保持",
-    duration: "4个月",
+    achievement: "带动农业发展",
+    duration: "6年",
     verified: true,
-    tag: "生活改善",
+    tag: "产业共建",
     metrics: {
-      improvement: "45%",
-      category: "身心健康"
+      improvement: "100%",
+      category: "品质达标"
     },
     delay: 0.4
   }
@@ -150,7 +153,7 @@ const animations = {
 
 export default function Testimonials() {
   return (
-    <section id ='testimonials' className="relative py-24">
+    <section id="testimonials" className="relative py-24">
       <div className="container">
         {/* 头部内容 */}
         <motion.div
@@ -170,41 +173,41 @@ export default function Testimonials() {
           >
             <Trophy className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-primary">
-              {SERVICE_AWARDS.SATISFACTION}
+              {SERVICE_AWARDS.INDUSTRY}
             </span>
           </motion.div>
           <br />
-          <h2 className="section-title mb-6">
-            用户的真实反馈
+          <h2 className="text-3xl font-bold tracking-tight mb-6">
+            三十年匠心 共创健康未来
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            超过{TESTIMONIAL_METRICS.TOTAL_REVIEWS}位用户的共同选择
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            连续13年荣登中国医药工业百强，服务员工规模{TESTIMONIAL_METRICS.TOTAL_REVIEWS}
             <br />
-            平均评分{TESTIMONIAL_METRICS.AVERAGE_RATING}，满意度达{TESTIMONIAL_METRICS.SATISFACTION}
+            以创新驱动发展，深耕医药健康产业
           </p>
 
-          {/* 评价指标 */}
+          {/* 企业成就 */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
             {[
               {
-                icon: Star,
-                metric: TESTIMONIAL_METRICS.SATISFACTION,
-                label: "用户满意度"
+                icon: Building2,
+                metric: "37+",
+                label: "全资子公司"
               },
               {
                 icon: Users,
-                metric: TESTIMONIAL_METRICS.TOTAL_REVIEWS,
-                label: "用户评价"
+                metric: "20000+",
+                label: "企业规模"
               },
               {
                 icon: Trophy,
-                metric: TESTIMONIAL_METRICS.AVERAGE_RATING,
-                label: "平均评分"
+                metric: "13年",
+                label: "百强企业"
               },
               {
-                icon: BarChart3,
-                metric: TESTIMONIAL_METRICS.RECOMMEND_RATE,
-                label: "推荐率"
+                icon: GraduationCap,
+                metric: "70+",
+                label: "创新项目"
               }
             ].map((item, index) => {
               const Icon = item.icon
@@ -212,7 +215,7 @@ export default function Testimonials() {
                 <div
                   key={index}
                   className="flex flex-col items-center p-4 rounded-xl
-                    bg-card/40 backdrop-blur-sm"
+                    bg-card/40 backdrop-blur-sm border border-border/50"
                 >
                   <Icon className="w-6 h-6 text-primary mb-2" />
                   <span className="text-2xl font-bold gradient-primary mb-1">
@@ -233,7 +236,7 @@ export default function Testimonials() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {testimonials.map((testimonial) => (
             <motion.div
@@ -241,9 +244,9 @@ export default function Testimonials() {
               variants={animations.item}
               className="group"
             >
-              <Card className={`relative h-full overflow-hidden hover-card
-                backdrop-blur-sm bg-card/95 
-                ${testimonial.featured ? 'border-[2px] border-primary' : 'border border-border/50'}`}
+              <Card className={`relative h-full overflow-hidden hover:shadow-lg
+                backdrop-blur-sm bg-card/95 border border-border/50
+                ${testimonial.featured ? 'border-primary/50' : ''}`}
               >
                 {/* 标签 */}
                 {testimonial.tag && (
@@ -251,7 +254,7 @@ export default function Testimonials() {
                     <div className={`
                       text-xs font-medium px-3 py-1 rounded-full
                       ${testimonial.featured ? 
-                        'bg-primary text-white' : 
+                        'bg-primary/10 text-primary' : 
                         'bg-muted text-muted-foreground'}
                     `}>
                       {testimonial.tag}
@@ -262,14 +265,13 @@ export default function Testimonials() {
                 <div className="p-6">
                   {/* 引用标记 */}
                   <Quote className={`
-                    w-10 h-10 mb-4
-                    ${testimonial.featured ? 'text-primary' : 'text-primary/20'}
+                    w-8 h-8 mb-4 text-primary/20
                     group-hover:text-primary transition-colors duration-300
                   `} />
 
                   {/* 内容 */}
                   <div className="space-y-4 mb-6">
-                    <p className="text-muted-foreground leading-relaxed
+                    <p className="text-muted-foreground leading-relaxed text-sm
                       group-hover:text-foreground transition-colors">
                       {testimonial.content}
                     </p>
@@ -286,7 +288,7 @@ export default function Testimonials() {
 
                   {/* 用户信息 */}
                   <div className="flex items-center gap-4">
-                    <Avatar className="h-12 w-12 ring-2 ring-background">
+                    <Avatar className="h-10 w-10 ring-2 ring-background">
                       <AvatarImage src={testimonial.avatar} />
                       <AvatarFallback>
                         {testimonial.author.slice(0, 2)}
@@ -295,14 +297,14 @@ export default function Testimonials() {
                     
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-medium">
+                        <span className="font-medium text-sm">
                           {testimonial.author}
                         </span>
                         {testimonial.verified && (
                           <BadgeCheck className="w-4 h-4 text-primary" />
                         )}
                       </div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-xs text-muted-foreground">
                         {testimonial.title}
                       </div>
                       <div className="text-xs text-muted-foreground">
@@ -315,11 +317,11 @@ export default function Testimonials() {
                   {testimonial.metrics && (
                     <div className="mt-6 pt-6 border-t border-border/50">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-xs text-muted-foreground">
                           {testimonial.metrics.category}
                         </span>
-                        <span className="text-lg font-bold text-primary">
-                          +{testimonial.metrics.improvement}
+                        <span className="text-sm font-bold text-primary">
+                          {testimonial.metrics.improvement}
                         </span>
                       </div>
                     </div>
@@ -336,14 +338,15 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.8 }}
-          className="mt-20 text-center"
+          className="mt-16 text-center"
         >
           <div className="inline-flex flex-col items-center gap-4">
-            <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-muted-foreground">
               {[
                 REVIEW_SOURCES.MEDICAL,
                 REVIEW_SOURCES.PLATFORM,
-                REVIEW_SOURCES.USERS
+                REVIEW_SOURCES.RESEARCH,
+                REVIEW_SOURCES.ENTERPRISE
               ].map((source, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <BadgeCheck className="w-4 h-4 text-primary" />

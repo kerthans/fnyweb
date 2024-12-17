@@ -8,7 +8,7 @@ const SYSTEM_CONFIG = {
   brand: {
     name: "福能源健康",
     logo: "/logo.png",
-    slogan: "守护每个生命的活力"
+    slogan: "做好人，制好药，关爱大众健康"
   },
   contact: {
     phone: "400-888-9999",

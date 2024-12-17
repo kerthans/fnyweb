@@ -1,20 +1,11 @@
 'use client'
 
-// import { useState } from 'react'
 import Image from 'next/image'
-// import { Button } from "@/components/ui/button"
-// import { Input } from "@/components/ui/input"
 import { 
   Sparkles,
-  // Mail,
-  // Phone,
-  // ScrollText,
   Activity,
   Shield,
   HandHeart,
-  // Send,
-  // MessageSquareText,
-  // Siren,
 } from 'lucide-react'
 
 // 简化的企业信息
@@ -152,26 +143,6 @@ export default function Footer() {
       </div>
 
       <div className="relative container mx-auto px-4">
-        {/* Newsletter Section */}
-        {/* <Newsletter /> */}
-
-        {/* Contact Grid */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-12">
-          <ContactItem 
-            icon={Phone}
-            title="健康咨询热线"
-            content={CONTACT_INFO.service.phone}
-            description="专业医师团队在线服务"
-            time={CONTACT_INFO.service.hours}
-          />
-          <ContactItem 
-            icon={Siren}
-            title="24小时紧急热线"
-            content={CONTACT_INFO.emergency.phone}
-            description="紧急情况快速响应"
-            time={CONTACT_INFO.emergency.hours}
-          />
-        </div> */}
 
         {/* Main Footer Content */}
         <div className="py-12 grid grid-cols-1 lg:grid-cols-12 gap-8 border-t border-slate-800/50">
