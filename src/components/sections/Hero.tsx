@@ -3,41 +3,70 @@
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Image from 'next/image'
-import { Brain,HeartPulse, Leaf, Activity } from 'lucide-react'
+import { 
+  HeartPulse, 
+  Leaf, 
+  FlaskConical, 
+  GraduationCap, 
+  Microscope,
+  Shield 
+} from 'lucide-react'
 
 // 核心信息配置
 const HERO_CONFIG = {
-  tagline: "智慧健康管理专家",
+  tagline: "科技好医生·福能源生物科技",
   headline: {
-    gradient: "数字化健康管理",
-    normal: "您的私人健康顾问"
+    gradient: "三十载深耕医药健康",
+    normal: "智创品质·科技养护"
   },
-  description: "融合人工智能与专业医疗团队，为您提供个性化的健康管理解决方案，守护全家人的健康生活。",
+  description: "以生物医药为核心，融合科技创新与传统医药智慧，致力于为大众提供优质可靠的健康产品。连续13年荣登中国医药工业百强企业，打造全方位的大健康产业生态。",
   stats: [
-    { label: "服务用户", value: "50,000+" },
-    { label: "专家团队", value: "100+" },
-    { label: "满意度", value: "98%" },
-    { label: "专利技术", value: "80+" }
+    { label: "企业规模", value: "20,000+" },
+    { label: "子公司", value: "37+" },
+    { label: "研发项目", value: "70+" },
+    { label: "合作院校", value: "20+" }
   ],
   features: [
     {
-      icon: Brain,
-      title: "AI健康评估",
-      subtitle: "智能风险预警",
+      icon: FlaskConical,
+      title: "生物科技创新",
+      subtitle: "国家企业技术中心",
       color: "primary"
     },
     {
-      icon: HeartPulse,
-      title: "全程健康管理",
-      subtitle: "专业团队跟进",
+      icon: Microscope,
+      title: "研发实力",
+      subtitle: "省级重点实验室",
       color: "secondary"
     },
     {
-      icon: Activity,
-      title: "精准干预方案",
-      subtitle: "个性化定制",
+      icon: GraduationCap,
+      title: "产学研合作",
+      subtitle: "博士后工作站",
       color: "accent"
     }
+  ],
+  products: {
+    highlight: [
+      {
+        name: "康复馨",
+        desc: "初原肌底修护喷雾",
+        tag: "明星产品",
+        icon: Shield
+      },
+      {
+        name: "UA1290石榴饮",
+        desc: "高端营养饮品",
+        tag: "健康饮品",
+        icon: HeartPulse
+      }
+    ]
+  },
+  certifications: [
+    "国家企业技术中心",
+    "省级重点实验室",
+    "高新技术企业",
+    "中国驰名商标"
   ]
 }
 
@@ -66,16 +95,13 @@ const Hero: React.FC = () => {
     <section id="hero" className="relative min-h-[90vh] flex items-center overflow-hidden">
       {/* 背景层 */}
       <div className="absolute inset-0">
-        {/* 替换为适合的抽象医疗背景图片 */}
-        {/* 推荐使用带有柔和科技感的医疗相关抽象背景 */}
-        {/* 图片要求：浅色调、具有科技感、包含医疗元素的矢量或实景图 */}
         <Image
           src="/images/hero-bg.jpg"
           alt="Background"
           fill
           className="object-cover opacity-10"
         />
-        <div className="absolute inset-0 gradient-bg-primary opacity-70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.8)_0%,transparent_100%)]" />
       </div>
 
@@ -114,7 +140,7 @@ const Hero: React.FC = () => {
                 size="lg" 
                 className="cta-button group text-lg"
               >
-                免费咨询
+                咨询产品
                 <motion.span
                   animate={{ x: [0, 5, 0] }}
                   transition={{ repeat: Infinity, duration: 1.5 }}
@@ -129,7 +155,7 @@ const Hero: React.FC = () => {
                 className="text-lg rounded-full border-2 border-primary/20 
                            hover:bg-primary/10 hover:border-primary/30"
               >
-                了解更多
+                产品系列
               </Button>
             </div>
 
@@ -152,9 +178,21 @@ const Hero: React.FC = () => {
                 </motion.div>
               ))}
             </div>
+
+            {/* 认证信息 */}
+            <div className="flex flex-wrap gap-3 pt-4">
+              {HERO_CONFIG.certifications.map((cert, index) => (
+                <div
+                  key={index}
+                  className="px-3 py-1 rounded-full text-xs bg-primary/5 text-primary"
+                >
+                  {cert}
+                </div>
+              ))}
+            </div>
           </motion.div>
 
-          {/* 右侧图片区 */}
+          {/* 右侧内容区 */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -167,16 +205,6 @@ const Hero: React.FC = () => {
                             from-primary/20 via-secondary/20 to-accent/20 
                             rounded-full blur-3xl animate-pulse-soft" />
               
-              {/* 主图 - 建议使用立体感强的3D医疗科技场景图 */}
-              {/* 图片要求：透明背景、主色调协调、富有科技感的3D医疗场景 */}
-              {/* <Image
-                src="/images/hero-main.png"
-                alt="Digital Health Technology"
-                fill
-                className="object-contain relative z-10"
-                priority
-              /> */}
-
               {/* 特征卡片 */}
               {HERO_CONFIG.features.map((feature, index) => (
                 <motion.div
@@ -199,6 +227,31 @@ const Hero: React.FC = () => {
                       <div className="text-sm text-muted-foreground">
                         {feature.subtitle}
                       </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* 产品展示卡片 */}
+              {HERO_CONFIG.products.highlight.map((product, index) => (
+                <motion.div
+                  key={index}
+                  {...animations.float}
+                  style={{
+                    bottom: `${20 + index * 25}%`,
+                    right: index % 2 ? '15%' : 'auto',
+                    left: index % 2 ? 'auto' : '15%'
+                  }}
+                  className="absolute glass-effect p-4 rounded-xl shadow-elevation"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <product.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-xs text-primary font-medium">{product.tag}</span>
+                      <span className="font-medium">{product.name}</span>
+                      <span className="text-sm text-muted-foreground">{product.desc}</span>
                     </div>
                   </div>
                 </motion.div>
